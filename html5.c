@@ -9,7 +9,7 @@ void html_tag_end(const char *);
 void html_tag_start(const char *tag, const char *properties, ...) {
 va_list args;
 	fprintf(stdout, "<%s", tag);
-	if (strcmp(properties, "")) {
+	if (properties) {
 		va_start(args, properties);
 		vfprintf(stdout, properties, args);
 		va_end(args);
@@ -22,7 +22,7 @@ void html_tag_end(const char *tag) {
 }
 
 void html_start(const char *dir, const char *lang) {
-	html_tag_start("!DOCTYPE HTML", "");
+	html_tag_start("!DOCTYPE HTML", NULL);
 	html_tag_start("HTML", " DIR=\"%s\" LANG=\"%s\"", dir, lang);
 }
 
@@ -32,7 +32,7 @@ void html_end(void) {
 }
 
 void html_head_start(void) {
-	html_tag_start("HEAD", "");
+	html_tag_start("HEAD", NULL);
 }
 
 void html_head_end(void) {
@@ -45,7 +45,7 @@ void html_meta(const char *name, const char *value, const char *content) {
 
 void html_title(const char *text, ...) {
 va_list args;
-	html_tag_start("TITLE", "");
+	html_tag_start("TITLE", NULL);
 	va_start(args, text);
 	vfprintf(stdout, text, args);
 	va_end(args);
@@ -70,7 +70,7 @@ va_list args;
 }
 
 void html_body_start(void) {
-	html_tag_start("BODY", "");
+	html_tag_start("BODY", NULL);
 }
 
 void html_body_end(void) {
@@ -78,8 +78,8 @@ void html_body_end(void) {
 }
 
 void html_div_start(const char *class) {
-	if (strcmp(class, "")) html_tag_start("DIV", " CLASS=\"%s\"", class);
-	else html_tag_start("DIV", "");
+	if (class) html_tag_start("DIV", " CLASS=\"%s\"", class);
+	else html_tag_start("DIV", NULL);
 }
 
 void html_div_end(void) {
@@ -87,8 +87,8 @@ void html_div_end(void) {
 }
 
 void html_h1_start(const char *class) {
-	if (strcmp(class, "")) html_tag_start("H1", " CLASS=\"%s\"", class);
-	else html_tag_start("H1", "");
+	if (class) html_tag_start("H1", " CLASS=\"%s\"", class);
+	else html_tag_start("H1", NULL);
 }
 
 void html_h1_end(void) {
@@ -96,12 +96,12 @@ void html_h1_end(void) {
 }
 
 void html_a_start(const char *href, const char *target) {
-	if (strcmp(href, ""))
-		if (strcmp(target, "")) html_tag_start("A", " HREF=\"%s\" TARGET=\"%s\"", href, target);
+	if (href)
+		if (target) html_tag_start("A", " HREF=\"%s\" TARGET=\"%s\"", href, target);
 		else html_tag_start("A", " HREF=\"%s\"", href);
 	else
-		if (strcmp(target, "")) html_tag_start("A", " TARGET=\"%s\"", target);
-		else html_tag_start("A", "");
+		if (target) html_tag_start("A", " TARGET=\"%s\"", target);
+		else html_tag_start("A", NULL);
 }
 
 void html_a_end(void) {
@@ -118,8 +118,8 @@ va_list args;
 }
 
 void html_table_start(const char *class) {
-	if (strcmp(class, "")) html_tag_start("TABLE", " CLASS=\"%s\"", class);
-	else html_tag_start("TABLE", "");
+	if (class) html_tag_start("TABLE", " CLASS=\"%s\"", class);
+	else html_tag_start("TABLE", NULL);
 }
 
 void html_table_end(void) {
@@ -127,8 +127,8 @@ void html_table_end(void) {
 }
 
 void html_caption_start(const char *class) {
-	if (strcmp(class, "")) html_tag_start("CAPTION", " CLASS=\"%s\"", class);
-	else html_tag_start("CAPTION", "");
+	if (class) html_tag_start("CAPTION", " CLASS=\"%s\"", class);
+	else html_tag_start("CAPTION", NULL);
 }
 
 void html_caption_end(void) {
@@ -145,8 +145,8 @@ va_list args;
 }
 
 void html_tr_start(const char *class) {
-	if (strcmp(class, "")) html_tag_start("TR", " CLASS=\"%s\"", class);
-	else html_tag_start("TR", "");
+	if (class) html_tag_start("TR", " CLASS=\"%s\"", class);
+	else html_tag_start("TR", NULL);
 }
 
 void html_tr_end(void) {
@@ -154,12 +154,12 @@ void html_tr_end(void) {
 }
 
 void html_td_start(const char *class, unsigned colspan) {
-	if (strcmp(class, ""))
+	if (class)
 		if (colspan > 1) html_tag_start("TD", " CLASS=\"%s\" COLSPAN=%u", class, colspan);
 		else html_tag_start("TD", " CLASS=\"%s\"", class);
 	else
 		if (colspan > 1) html_tag_start("TD", " COLSPAN=%u", colspan);
-		else html_tag_start("TD", "");
+		else html_tag_start("TD", NULL);
 }
 
 void html_td_end(void) {
